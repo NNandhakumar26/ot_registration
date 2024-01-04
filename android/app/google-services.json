@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "640365904139",
+    "project_id": "karnataka-ot-registration",
+    "storage_bucket": "karnataka-ot-registration.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:640365904139:android:a4925a08a7a07ddca4620e",
+        "android_client_info": {
+          "package_name": "com.inzeph.kmc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "640365904139-1i3u24694ar8tjcusegrksf0c4jm02tr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.inzeph.kmc",
+            "certificate_hash": "a359efa87ad7cbd8ac3e9a855c4a92ac06259c65"
+          }
+        },
+        {
+          "client_id": "640365904139-3018mtoflc8lqlvtmipacb50h7pk1qlp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8PtgHclkXtKjU3Yh_JU_PTvx7xJvx9ek"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "640365904139-3018mtoflc8lqlvtmipacb50h7pk1qlp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "640365904139-u5n8pmggc6ga8bif0ip2gd2uemimi4g1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.inzeph.kmc.kannadaMedicalConnect"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

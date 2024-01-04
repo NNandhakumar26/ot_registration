@@ -1,0 +1,65 @@
+import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+class Message extends Equatable{
+
+  final String userId;
+  final String? userImage;
+  final int dateTime;
+  final String content;
+  final String contentId;
+  final String name;
+  final String? contentImage;
+  final bool isMe;
+
+  const Message({
+    required this.userId,
+    required this.userImage,
+    required this.dateTime,
+    required this.content,
+    required this.name,
+    required this.isMe,
+    required this.contentId,
+    required this.contentImage
+  });
+
+
+  static List<Message> getMessageList(List<Map<String,dynamic>> data){
+    return data.map((e) => Message.fromJson(e)).toList();
+  }
+
+  factory Message.fromJson(Map<String,dynamic> data) {
+
+    final userId = data['userId'];
+    final userImage = data['userImage'];
+    final dateTime = data['dateTime'];
+    final content = data['content'];
+    final name = data['name']??'New User';
+    final contentImage = data['contentImage'];
+    final contentId = data['contentId'];
+    final User user = FirebaseAuth.instance.currentUser!;
+
+    return Message(
+      name: name,
+      userId: userId??'',
+      userImage: userImage,
+      dateTime: dateTime,
+      content: content,
+      contentImage: contentImage,
+      isMe: user.uid == userId,
+      contentId: contentId
+    );
+  }
+
+
+
+  @override
+  List<Object?> get props => [
+    userId,
+    userImage,
+    dateTime,
+    content,
+    contentImage
+  ];
+
+}

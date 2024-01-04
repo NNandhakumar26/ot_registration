@@ -1,0 +1,105 @@
+name: ot_registration
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+ 
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.2
+  # flutter_phoenix: ^1.1.0
+
+  # Data Class Handling
+  equatable: ^2.0.5
+
+  # Firebase
+  firebase_core: ^2.5.0
+  firebase_auth: ^4.2.6
+  cloud_firestore: ^4.3.2
+  firebase_storage: ^11.0.11
+  firebase_messaging: ^14.2.2
+  firebase_dynamic_links: ^5.1.0
+
+  # BLOC Architecture
+  flutter_bloc: ^8.1.2
+  bloc: ^8.1.1
+
+  # File Handling
+  file_picker: ^6.1.1
+  url_launcher: ^6.1.9
+  # flutter_cached_pdfview: ^0.4.1
+  image_picker: ^1.0.5
+
+  # Internet Handling
+  connectivity_plus: ^5.0.2
+
+  # Local Storage
+  hive_flutter: ^1.1.0
+
+  # Social Login
+  google_sign_in: ^6.2.1
+
+  # Icons
+  font_awesome_flutter: ^10.4.0
+  easy_localization: ^3.0.1
+
+  # Widgets
+  carousel_slider: ^4.2.1
+  flutter_cached_pdfview: ^0.4.1
+  # pdfx: ^2.3.0
+  like_button: ^2.0.5
+  # share_plus: ^7.2.1
+  google_fonts: ^4.0.4
+  sign_in_button: ^3.2.0
+  internet_file: ^1.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  change_app_package_name: ^1.1.0
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^2.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    
+  fonts:
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/OpenSans-ExtraBold.ttf
+          weight: 900
+        - asset: assets/fonts/OpenSans-Bold.ttf
+          weight: 800
+        - asset: assets/fonts/OpenSans-SemiBold.ttf
+          weight: 700
+        - asset: assets/fonts/OpenSans-Medium.ttf
+          weight: 600
+        - asset: assets/fonts/OpenSans-Regular.ttf
+          weight: 500
+        - asset: assets/fonts/OpenSans-Light.ttf
+          weight: 400

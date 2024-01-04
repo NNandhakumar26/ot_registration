@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>640365904139-6dervdm8iqlilevl16ia3evmsj7sv79p.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.640365904139-6dervdm8iqlilevl16ia3evmsj7sv79p</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>640365904139-1i3u24694ar8tjcusegrksf0c4jm02tr.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDUYhoNZIVICsbX6JUkA5V1tyYQ58nZDLU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>640365904139</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.otRegistration</string>
+	<key>PROJECT_ID</key>
+	<string>karnataka-ot-registration</string>
+	<key>STORAGE_BUCKET</key>
+	<string>karnataka-ot-registration.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:640365904139:ios:8e708cd530ff05c1a4620e</string>
+</dict>
+</plist>
