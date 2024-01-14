@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:ot_registration/helper/resources/appconfig.dart';
-import 'package:ot_registration/helper/resources/color_manager.dart';
+import 'package:ot_registration/app/remove/appconfig.dart';
+import 'package:ot_registration/app/resources/color_manager.dart';
 
 class Background extends StatelessWidget {
   final Widget child;
@@ -27,7 +27,7 @@ class Background extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppConfig.primaryLight,
+        // backgroundColor: AppConfig.primaryLight,
         appBar: isBackPressed
             ? AppBar(
                 leading: Padding(

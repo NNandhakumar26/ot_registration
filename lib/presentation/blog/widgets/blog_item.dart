@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ot_registration/app/routes.dart';
 import 'package:ot_registration/data/model/blog.dart';
-import 'package:ot_registration/helper/resources/color_manager.dart';
+import 'package:ot_registration/app/resources/color_manager.dart';
 
 class BlogItem extends StatelessWidget {
   final Blog blog;
@@ -17,16 +17,21 @@ class BlogItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (blog.image != null)
-              Container(
-                height: 160,
-                decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(16),
-                    ),
-                    image: DecorationImage(
-                        fit: BoxFit.cover, image: NetworkImage(blog.image!))),
+            Container(
+              height: 160,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(16),
+                ),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(
+                    blog.image ??
+                        'https://conversionfanatics.com/wp-content/themes/seolounge/images/no-image/No-Image-Found-400x264.png',
+                  ),
+                ),
               ),
+            ),
             if (blog.title != null)
               Padding(
                 padding:

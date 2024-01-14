@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
 
 part 'network_event.dart';
@@ -10,20 +9,20 @@ class NetworkBloc extends Bloc<NetworkEvent, NetworkState> {
     on<NetworkNotify>(_notifyStatus);
   }
 
-  void _notifyStatus(NetworkNotify event, emit) async{
-    var connectivityResult = await (Connectivity().checkConnectivity());
+  void _notifyStatus(NetworkNotify event, emit) async {
+    // var connectivityResult = await (Connectivity().checkConnectivity());
 
-    if(connectivityResult != ConnectivityResult.none){
-      emit(NetworkSuccess());
-    }else{
-      emit(NetworkFailure());
-    }
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      if (result == ConnectivityResult.none) {
-        emit(NetworkFailure());
-      } else {
-        emit(NetworkSuccess());
-      }
-    });
+    // if(connectivityResult != ConnectivityResult.none){
+    //   emit(NetworkSuccess());
+    // }else{
+    //   emit(NetworkFailure());
+    // }
+    // Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    //   if (result == ConnectivityResult.none) {
+    //     emit(NetworkFailure());
+    //   } else {
+    //     emit(NetworkSuccess());
+    //   }
+    // });
   }
 }

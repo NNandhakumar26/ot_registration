@@ -38,10 +38,11 @@ class _BlogsListViewState extends State<BlogsListView> {
           }
 
           return BlogsBuilder(
-              controller: _viewModel.feedScrollController,
-              blogs: _viewModel.blogs,
-              isLoading: state is BlogsLoading,
-              isPaging: state is Paging);
+            controller: _viewModel.feedScrollController,
+            blogs: _viewModel.blogs,
+            isLoading: state is BlogsLoading,
+            isPaging: state is Paging,
+          );
         },
       ),
     );

@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 
 class Blog extends Equatable {
-
   final String? id;
   final String? title;
   final String? content;
@@ -27,13 +26,13 @@ class Blog extends Equatable {
     required this.createdBy,
     required this.createdAt,
   });
-  
+
   @override
   List<Object> get props {
     return [
-      title??'',
-      content??'',
-      image??'',
+      title ?? '',
+      content ?? '',
+      image ?? '',
       likes,
       share,
       report,
@@ -41,7 +40,6 @@ class Blog extends Equatable {
       createdAt,
     ];
   }
-
 
   Blog copyWith({
     String? id,
@@ -80,14 +78,14 @@ class Blog extends Equatable {
     };
   }
 
-  factory Blog.fromMap(map) {
+  factory Blog.fromMap(map, {String? blogId}) {
     return Blog(
-      id: map['id'] != null ? map['id'] as String : "",
+      id: blogId ?? (map['id'] != null ? map['id'] as String : ""),
       title: map['title'] != null ? map['title'] as String : null,
       content: map['content'] != null ? map['content'] as String : null,
       image: map['image'] != null ? map['image'] as String : null,
-      likes: map['likes']!=null ? map['likes'] as int : 0,
-      share: map['share']!=null ? map['share'] as int : 0,
+      likes: map['likes'] != null ? map['likes'] as int : 0,
+      share: map['share'] != null ? map['share'] as int : 0,
       report: map['report'] ?? '',
       createdBy: map['createdBy'] as String,
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
@@ -96,7 +94,8 @@ class Blog extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory Blog.fromJson(String source) => Blog.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Blog.fromJson(String source) =>
+      Blog.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   bool get stringify => true;

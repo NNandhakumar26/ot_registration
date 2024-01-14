@@ -12,10 +12,16 @@ class SplashView extends StatelessWidget {
       listener: (_, state) {
         if (state is Home) {
           Navigator.pushNamedAndRemoveUntil(
-              context, Routes.home, (Route<dynamic> route) => false);
+            context,
+            Routes.home,
+            (Route<dynamic> route) => false,
+          );
         } else if (state is SignIn) {
           Navigator.pushNamedAndRemoveUntil(
-              context, Routes.signin, (Route<dynamic> route) => false);
+            context,
+            Routes.signin,
+            (Route<dynamic> route) => false,
+          );
         }
       },
       child: const Scaffold(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ot_registration/helper/utils/constants.dart';
-import 'package:ot_registration/helper/utils/shimmer.dart';
+import 'package:ot_registration/app/helper/widgets/shimmer.dart';
 
 class LoadingWidget extends StatelessWidget {
   final String type;

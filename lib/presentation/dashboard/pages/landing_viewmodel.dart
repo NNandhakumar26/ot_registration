@@ -7,7 +7,7 @@ class LandingViewModel extends BaseViewModel {
 
   @override
   void start() {
-    bannerImages = ['loading'];
+    bannerImages = [];
     blogs = [];
   }
 

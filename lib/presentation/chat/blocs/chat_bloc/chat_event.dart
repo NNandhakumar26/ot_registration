@@ -3,7 +3,7 @@ part of 'chat_bloc.dart';
 @immutable
 abstract class ChatEvent {}
 
-class RequestMessageEvent extends ChatEvent {}
+// class RequestMessageEvent extends ChatEvent {}
 
 class MessageReceivedEvent extends ChatEvent {
   final List<Message> messages;

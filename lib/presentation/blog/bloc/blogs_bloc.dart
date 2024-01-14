@@ -1,12 +1,16 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:ot_registration/app/config/dependencies.dart';
+import 'package:ot_registration/data/model/app_user.dart';
 import 'package:ot_registration/data/model/blog.dart';
-import 'package:ot_registration/data/model/user.dart';
-import 'package:ot_registration/data/network/config/firebase.dart';
+import 'package:ot_registration/data/network/utils/references.dart';
+import 'package:ot_registration/presentation/app_user/user_repo.dart';
 
 part 'blogs_event.dart';
 part 'blogs_state.dart';
@@ -18,9 +22,12 @@ class BlogsBloc extends Bloc<BlogsEvent, BlogsState> {
     on<LikeBlog>(_onLikeBlog);
     on<ReportBlog>(_onReportBlog);
     on<CreateBlog>(_onCreateBlog);
+    on<UpdateBlog>(_onUpdateBlog);
+    on<DeleteBlog>(_onDeleteBlog);
   }
 
-  FirebaseClient repo = FirebaseClient();
+  var repo = FirebaseReferences();
+  final userRepo = getIt.get<UserRepo>();
   List docs = [];
   List<Blog> blogs = [];
   bool isFinished = false;
@@ -60,7 +67,7 @@ class BlogsBloc extends Bloc<BlogsEvent, BlogsState> {
       var blogsData = result.docs.map((e) {
         var data = e.data() as Map;
         data['id'] = e.id;
-        return Blog.fromMap(data);
+        return Blog.fromMap(data, blogId: e.id);
       }).toList();
       blogs = [...blogs, ...blogsData];
 
@@ -76,18 +83,29 @@ class BlogsBloc extends Bloc<BlogsEvent, BlogsState> {
   void _onGetBlogDetail(GetBlogDetail event, Emitter emit) async {
     emit(BlogsLoading());
     try {
-      var isLiked = (await repo.likedDB.doc(event.blog.id).get()).exists;
-      var userDoc = await repo.userDB.doc(event.blog.createdBy).get();
+      // var isLiked = (await repo.likedDB.doc(event.blog.id).get()).exists;
+      var isLikedByMe =
+          (await repo.likedDB(event.blog.id!).doc(userRepo.uid).get()).exists;
+
+      var createdBy = await repo.userDB.doc(event.blog.createdBy).get();
       var blogDoc = await repo.blogDB.doc(event.blog.id).get();
 
-      Blog blog = Blog.fromMap(blogDoc.data());
+      Blog blog = Blog.fromMap(blogDoc.data(), blogId: blogDoc.id);
 
-      if (userDoc.exists) {
-        var user = User.fromMap(userDoc.data());
-        blog = blog.copyWith(id: event.blog.id, createdBy: user.name);
+      if (createdBy.exists) {
+        var user = AppUser.fromMap(createdBy.data() as Map<String, dynamic>);
+        blog = blog.copyWith(
+          id: event.blog.id,
+          createdBy: user.displayName,
+        );
       }
 
-      emit(BlogDetailFetched(blog: blog, isLikedByMe: isLiked));
+      emit(
+        BlogDetailFetched(
+          blog: blog,
+          isLikedByMe: isLikedByMe,
+        ),
+      );
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -97,11 +115,19 @@ class BlogsBloc extends Bloc<BlogsEvent, BlogsState> {
 
   void _onLikeBlog(LikeBlog event, Emitter emit) async {
     try {
-      await repo.blogDB.doc(event.blogId).update({'likes': event.likes});
+      await repo.blogDB.doc(event.blogId).update(
+        {
+          'likes': FieldValue.increment(event.isLiked ? 1 : -1),
+        },
+      );
       if (event.isLiked) {
-        await repo.likedDB.doc(event.blogId).set({'liked': true});
+        await repo.likedDB(event.blogId).doc(userRepo.uid).set(
+          {
+            'userId': userRepo.uid,
+          },
+        );
       } else {
-        await repo.likedDB.doc(event.blogId).delete();
+        await repo.likedDB(event.blogId).doc(userRepo.uid).delete();
       }
     } catch (e) {
       if (kDebugMode) {
@@ -137,12 +163,59 @@ class BlogsBloc extends Bloc<BlogsEvent, BlogsState> {
       if (kDebugMode) {
         print(e);
       }
+      emit(ErrorCreatingBlog(message: e.toString()));
+    }
+  }
+
+  // function to update blog
+  void _onUpdateBlog(UpdateBlog event, Emitter emit) async {
+    emit(BlogsLoading());
+    try {
+      if (event.imagePathToRemove != null) {
+        await FirebaseStorage.instance
+            .refFromURL(event.imagePathToRemove!)
+            .delete();
+      }
+      Blog blog = event.blog;
+      if (blog.image != null && event.imagePathToRemove != null) {
+        var downloadUrl = await uploadFile(blog.image!);
+        blog = blog.copyWith(image: downloadUrl);
+      }
+
+      await repo.blogDB.doc(event.blog.id).set(
+            blog.toMap(),
+            SetOptions(
+              merge: true,
+            ),
+          );
+      emit(BlogCreated());
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      emit(ErrorCreatingBlog(message: e.toString()));
     }
   }
 
   Future<String> uploadFile(String path) async {
-    TaskSnapshot task =
-        await repo.storageReference.child('blogs').putFile(File(path));
+    TaskSnapshot task = await FirebaseReferences.blogStorage()
+        .child(
+          DateTime.now().millisecondsSinceEpoch.toString(),
+        )
+        .putFile(File(path));
     return await task.ref.getDownloadURL();
+  }
+
+  void _onDeleteBlog(DeleteBlog event, Emitter<BlogsState> emit) async {
+    emit(BlogsLoading());
+    try {
+      await repo.blogDB.doc(event.blogId).delete();
+      emit(BlogCreated());
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      emit(ErrorCreatingBlog(message: e.toString()));
+    }
   }
 }

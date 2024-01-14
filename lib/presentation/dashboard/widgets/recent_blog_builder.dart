@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ot_registration/data/model/blog.dart';
 import 'package:ot_registration/presentation/blog/widgets/blog_item.dart';
 
-import '../../../helper/widgets/shimmer_card.dart';
+import '../../../app/helper/widgets/shimmer_card.dart';
 
 class RecentBlogBuilder extends StatelessWidget {
   final List<Blog> blogs;
@@ -18,7 +18,7 @@ class RecentBlogBuilder extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (_, index) {
-        return isLoading ? const ShimmerCard() : BlogItem(blog: blogs[index]);
+        return isLoading ? ShimmerCard() : BlogItem(blog: blogs[index]);
       },
       separatorBuilder: (_, index) {
         return const SizedBox(height: 20);

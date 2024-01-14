@@ -2,8 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:ot_registration/data/model/blog.dart';
-
-import 'package:ot_registration/data/network/config/firebase.dart';
+import 'package:ot_registration/data/network/utils/references.dart';
 
 part 'dashboard_event.dart';
 part 'dashboard_state.dart';
@@ -14,7 +13,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     on<GetRecentBlogs>(_onGetRecentBlogs);
   }
 
-  FirebaseClient repo = FirebaseClient();
+  var repo = FirebaseReferences();
 
   void _onGetBanner(GetBanner event, Emitter emit) async {
     emit(BannerImagesLoading());
@@ -34,14 +33,14 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     emit(RecentBlogsLoading());
     try {
       var result = await repo.blogDB
-          .limit(3)
+          .limit(4)
           .orderBy('createdAt', descending: true)
           .get();
 
       var blogs = result.docs.map((e) {
         var data = e.data() as Map;
         data['id'] = e.id;
-        return Blog.fromMap(data);
+        return Blog.fromMap(data, blogId: e.id);
       }).toList();
       emit(RecentBlogsFetched(blogs: blogs));
     } catch (e) {

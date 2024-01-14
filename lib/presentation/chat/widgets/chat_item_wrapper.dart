@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ot_registration/helper/resources/color_manager.dart';
+import 'package:ot_registration/app/resources/color_manager.dart';
 import 'package:ot_registration/helper/utils/date_utils.dart';
 
 import 'package:ot_registration/helper/utils/utils.dart';
@@ -51,23 +51,26 @@ class ChatItemWrapper extends StatelessWidget {
             ), */
             Container(
               padding: EdgeInsets.all(isImage ? 5 : 10),
-              constraints:
-                  BoxConstraints(minWidth: 50, maxWidth: isImage ? 200 : 300),
+              constraints: BoxConstraints(
+                minWidth: 50,
+                maxWidth: isImage ? 200 : 300,
+              ),
               decoration: BoxDecoration(
-                  color: isMe
-                      ? AppColor.primary
-                      : AppColor.primary.withOpacity(0.064),
-                  borderRadius: isMe
-                      ? BorderRadius.only(
-                          topLeft: Radius.circular(15),
-                          topRight: Radius.circular(15),
-                          bottomLeft: Radius.circular(15),
-                        )
-                      : BorderRadius.only(
-                          bottomRight: Radius.circular(15),
-                          topRight: Radius.circular(15),
-                          bottomLeft: Radius.circular(15),
-                        )),
+                color: isMe
+                    ? AppColor.primary
+                    : AppColor.primary.withOpacity(0.064),
+                borderRadius: isMe
+                    ? BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15),
+                        bottomLeft: Radius.circular(15),
+                      )
+                    : BorderRadius.only(
+                        bottomRight: Radius.circular(15),
+                        topRight: Radius.circular(15),
+                        bottomLeft: Radius.circular(15),
+                      ),
+              ),
               child: Column(
                 crossAxisAlignment:
                     isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
@@ -77,7 +80,6 @@ class ChatItemWrapper extends StatelessWidget {
                   Text(
                     '$name . ${DateTimeUtils.formatDate(date)}',
                     style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                          // fontSize: 10,
                           color: isMe ? Colors.white54 : Colors.black54,
                           fontWeight: FontWeight.w400,
                         ),

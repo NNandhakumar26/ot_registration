@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:ot_registration/helper/resources/color_manager.dart';
+import 'package:ot_registration/app/resources/color_manager.dart';
 
 import 'package:ot_registration/helper/utils/constants.dart';
 import 'package:ot_registration/helper/utils/utils.dart';
@@ -37,85 +37,124 @@ class ChatItem extends StatelessWidget {
     return ValueListenableBuilder(
         valueListenable: deleteShow,
         builder: (_, isDeleteShow, child) {
-          return Container(
-              color: deleteShow.value
-                  ? AppColor.primaryChatLight2
-                  : AppColor.transparent,
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Row(
-                mainAxisAlignment:
-                    isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    onLongPress: () => deleteShow.value = true,
-                    child: Column(
-                      crossAxisAlignment: isMe
-                          ? CrossAxisAlignment.end
-                          : CrossAxisAlignment.start,
-                      children: [
-                        if (deleteShow.value && isMe)
-                          InkWell(
-                            onTap: () => BlocProvider.of<ChatBloc>(context)
-                                .add(DeleteMessageEvent(contentId: contentId)),
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.only(bottom: 10, right: 22),
-                              decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  borderRadius: BorderRadius.circular(4)),
-                              child: Row(
-                                children: const [
-                                  Icon(
-                                    Icons.close,
-                                    color: Colors.white,
+          return PopScope(
+            // onWillPop: () async {
+            //   if (deleteShow.value) {
+            //     deleteShow.value = false;
+            //     return false;
+            //   }
+            //   return true;
+            // },
+            canPop: !deleteShow.value,
+            onPopInvoked: (didPop) {
+              if (deleteShow.value) deleteShow.value = false;
+            },
+            child: Container(
+                color: deleteShow.value
+                    ? AppColor.primaryChatLight2
+                    : Colors.transparent,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Row(
+                  mainAxisAlignment:
+                      isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onLongPress: () => deleteShow.value = true,
+                      child: Column(
+                        crossAxisAlignment: isMe
+                            ? CrossAxisAlignment.end
+                            : CrossAxisAlignment.start,
+                        children: [
+                          if (deleteShow.value && isMe)
+                            InkWell(
+                              onTap: () async {
+                                bool? shouldDelete = await showDialog(
+                                  context: context,
+                                  builder: (builder) => AlertDialog(
+                                    title: Text('Delete Message'),
+                                    content: Text(
+                                        'Are you sure you want to delete this message?'),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, true),
+                                          child: Text('Yes')),
+                                      TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, false),
+                                          child: Text('No')),
+                                    ],
                                   ),
-                                ],
+                                );
+                                if (shouldDelete ?? false) {
+                                  BlocProvider.of<ChatBloc>(context).add(
+                                      DeleteMessageEvent(contentId: contentId));
+                                }
+                                deleteShow.value = false;
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                    bottom: 10, right: 22),
+                                decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
+                                    borderRadius: BorderRadius.circular(4)),
+                                child: Row(
+                                  children: const [
+                                    Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        if (contentImg != null)
-                          ChatItemWrapper(
-                            isMe: isMe,
-                            name: name,
-                            date: date,
-                            userImage: userImage,
-                            isImage: true,
-                            child: GestureDetector(
-                              onTap: () => showImageBottomSheet(context),
-                              child: Image.network(
-                                contentImg!,
-                                fit: BoxFit.cover,
-                                loadingBuilder:
-                                    (context, child, loadingProgress) {
-                                  return loadingProgress == null
-                                      ? child
-                                      : const SizedBox(
-                                          width: 100,
-                                          height: 100,
-                                          child: LoadingWidget(
-                                              type: Constants.shimmer_1),
-                                        );
-                                },
+                          if (contentImg != null)
+                            ChatItemWrapper(
+                              isMe: isMe,
+                              name: name,
+                              date: date,
+                              userImage: userImage,
+                              isImage: true,
+                              child: GestureDetector(
+                                onTap: () => showImageBottomSheet(context),
+                                child: Image.network(
+                                  contentImg!,
+                                  fit: BoxFit.cover,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    return loadingProgress == null
+                                        ? child
+                                        : const SizedBox(
+                                            width: 100,
+                                            height: 100,
+                                            child: LoadingWidget(
+                                                type: Constants.shimmer_1),
+                                          );
+                                  },
+                                ),
                               ),
                             ),
-                          ),
-                        if (contentImg != null) Utils.verticalDividerMedium,
-                        if (content.isNotEmpty)
-                          ChatItemWrapper(
-                            name: name,
-                            isMe: isMe,
-                            date: date,
-                            userImage: userImage,
-                            isImage: false,
-                            child: Text(content,
+                          if (contentImg != null) Utils.verticalDividerMedium,
+                          if (content.isNotEmpty)
+                            ChatItemWrapper(
+                              name: name,
+                              isMe: isMe,
+                              date: date,
+                              userImage: userImage,
+                              isImage: false,
+                              child: Text(
+                                content,
                                 style: TextStyle(
-                                    color: isMe ? Colors.white : Colors.black)),
-                          )
-                      ],
-                    ),
-                  )
-                ],
-              ));
+                                  color: isMe ? Colors.white : Colors.black,
+                                ),
+                              ),
+                            )
+                        ],
+                      ),
+                    )
+                  ],
+                )),
+          );
         });
   }
 
